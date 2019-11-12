@@ -1,8 +1,8 @@
 <?php
 
 	define('DB_TYPE', 'mysql');
-	define('DB_HOST', 'localhost'); //local
-	define('DB_NAME', 'temp'); //banco
+	define('DB_HOST', '127.0.0.1'); //local
+	define('DB_NAME', 'usuarios'); //banco
 	define('DB_USER', 'root'); //usuario
 	define('DB_PASS', ''); //senha
 
