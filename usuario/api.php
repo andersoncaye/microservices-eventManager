@@ -1,9 +1,14 @@
 <?php
-
+	
 	require 'Slim/Slim.php';
 	\Slim\Slim::registerAutoloader();
 
 	require 'Database.php';
+	define('DB_TYPE', 'mysql');
+	define('DB_HOST', 'mysql04-farm76.kinghost.net'); //local
+	define('DB_NAME', 'syscoffe03'); //banco
+	define('DB_USER', 'syscoffe03'); //usuario
+	define('DB_PASS', 'olamundo2019'); //senha
 	$database = new Database(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
 
 
@@ -16,18 +21,39 @@
 
 	});
 
+	/*
+		Método GET
+	*/
+
+	$app->get('/usuario/show/', function () use ($database) {
+
+		$query = "SELECT * FROM usuarios WHERE deletado = 0";
+		$return = $database->select($query);
+		
+        echo json_encode($return);
+
+	});
+
+	/*
+		Método GET
+	*/
+
 	$app->get('/usuario/:dados', function($dados) use ($database) {
 
+		$dados = (int) $dados;
         $query = "SELECT * FROM usuarios WHERE id=".$dados;
         $return = $database->select($query);
 
         echo json_encode($return);
 
-		//echo "Voce procurou sobre o usuario com id = $dados";
-
 	});
 
-	$app->post('/usuario', function() use ($app, $database) {
+	/*
+		Método POST
+		Tipo STORE = INSERT
+	*/
+
+	$app->post('/usuario/store', function() use ($app, $database) {
 		//$nome = $app->request()->getBody();
         $temp = $app->request()->headers->all();
         $nome = json_encode($temp);
@@ -36,27 +62,49 @@
 
 		$return = array('ERRO' => 'ERRO' );
 
-		if(isset($nome->Nome) && isset($nome->Sobrenome) && isset($nome->Email) && isset($nome->Senha))
+		if(
+			isset($nome->Documento) && 
+			isset($nome->Email)	&& 
+			isset($nome->Tipo)
+		)
 		{
 			$array = array(
-				'nome' => $nome->Nome,
-				'sobrenome' => $nome->Sobrenome,
+				'documento' => $nome->Documento,
 				'email' => $nome->Email,
-				'senha' => $nome->Senha
+				'tipo' => $nome->Tipo
 			);
+
+			if ( isset($nome->Nome) ) {
+				$array['nome'] = $nome->Nome;
+			}
+
+			if ( isset($nome->Senha) ) {
+				$array['senha'] = $nome->Senha;
+			}
+
 			$return = $database->insert("usuarios", $array);
 			$array['id'] = $return;
 		} else {
             $array = array( 'erro' => 'campo obrigatorio.');
-            $array['campos'] = array('nome'=>'obrigatorio', 'sobrenome'=>'obrigatorio', 'email'=>'obrigatorio', 'senha'=>'obrigatorio');
+            $array['campos'] = array(
+				'nome'=>'opcional', 
+				'documento'=>'obrigatorio', 
+				'email'=>'obrigatorio', 
+				'senha'=>'opcional',
+				'tipo' => 'obrigatorio'
+			);
 		}
 
 		echo json_encode($array);
 
 	});
 
+	/*
+		Método POST
+		Tipo UPDATE = UPDATE
+	*/
 
-	$app->put('/usuario', function() use ($app, $database){
+	$app->post('/usuario/update', function() use ($app, $database){
         $temp = $app->request()->headers->all();
         $nome = json_encode($temp);
         $nome = json_decode($nome);
@@ -79,25 +127,24 @@
 
 	});
 
+	/*
+		Método GET
+		Tipo DELETE = UPDATE
+	*/
 
-	$app->delete('/usuario', function() use ($app, $database){
+	$app->get('/usuario/destroy/:dados', function($dados) use ($database){
 
-        $temp = $app->request()->headers->all();
-        $nome = json_encode($temp);
-        $nome = json_decode($nome);
+		$dados = (int) $dados;
+		$array = array ( 'deletado' => '1');
+		$return = $database->update('usuarios', $array, 'id = '.$dados);
+		
+		$array = array ( 'id_destaivado' => $dados);
 
-        $array = array ('ERRO' => 'ERRO');
-        if (isset($nome->Id)){
-            $array = array();
-            $id = $nome->Id;
-            $database->delete('usuarios', "id=$id");
-            $array['id'] = $id;
-        } else {
-            $array = array( 'erro' => 'campo obrigatorio.');
-            $array['campos'] = array('id' => 'obrigatorio');
-        }
-        $nome = json_encode($array);
-        echo $nome;
+		if (!$return) {
+			$array = array ( 'Erro' => 'Cadastro não desativado', 'id' => $dados);
+		}
+
+        echo json_encode($array);
 
 	});
 

@@ -1,38 +1,18 @@
 <?php
 
-	define('DB_TYPE', 'mysql');
-	define('DB_HOST', '127.0.0.1'); //local
-	define('DB_NAME', 'usuarios'); //banco
-	define('DB_USER', 'root'); //usuario
-	define('DB_PASS', ''); //senha
-
 //namespace System;
 
 class Database extends \PDO
 {
 
-	public function __construct()
+	public function __construct($dbType, $dbHost, $dbName, $dbUser, $dbPass)
 	{
 		try {
-			$dbType = DB_TYPE;
-			$dbHost = DB_HOST;
-			$dbName = DB_NAME;
-			$dbUser = DB_USER;
-			$dbPass = DB_PASS;
 			parent::__construct("{$dbType}:host=$dbHost;dbname=$dbName;charset=utf8", $dbUser, $dbPass);
         } catch (\PDOException $e) {
 			die("Ops! Desculpe, ocorreu uma falha de carregamento. Tente novamente mais tarde.");
         }
 	}
-
-//	public function __construct($dbType, $dbHost, $dbName, $dbUser, $dbPass)
-//	{
-//		try {
-//			parent::__construct("{$dbType}:host=$dbHost;dbname=$dbName;charset=utf8", $dbUser, $dbPass);
-//        } catch (\PDOException $e) {
-//			die("Ops! Desculpe, ocorreu uma falha de carregamento. Tente novamente mais tarde.");
-//        }
-//	}
 
 	public function insert($table, $data, $lastInsertIdName = NULL)
 	{
