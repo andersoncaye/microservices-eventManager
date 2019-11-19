@@ -25,12 +25,10 @@
 	*/
 
 	$app->get('/usuario/show/', function () use ($database) {
-
 		$query = "SELECT * FROM usuarios WHERE deletado = 0";
 		$return = $database->select($query);
 		
         echo json_encode($return);
-
 	});
 
 	/*
@@ -38,13 +36,11 @@
 	*/
 
 	$app->get('/usuario/:dados', function($dados) use ($database) {
-
 		$dados = (int) $dados;
         $query = "SELECT * FROM usuarios WHERE id=".$dados;
         $return = $database->select($query);
 
         echo json_encode($return);
-
 	});
 
 	/*
@@ -95,7 +91,6 @@
 		}
 
 		echo json_encode($array);
-
 	});
 
 	/*
@@ -135,7 +130,6 @@
 	*/
 
 	$app->get('/usuario/destroy/:dados', function($dados) use ($database){
-
 		$dados = (int) $dados;
 		$array = array ( 'deletado' => '1');
 		$return = $database->update('usuarios', $array, 'id = '.$dados);
@@ -147,10 +141,7 @@
 		}
 
         echo json_encode($array);
-
 	});
 
-
 	$app->run();
-
 ?>

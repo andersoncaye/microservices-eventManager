@@ -19,18 +19,13 @@
 
 	});
 
-	$app->get('/usuario/:dados', function($dados) use ($database) {
+	$app->get('/login', function (){
 
-        $query = "SELECT * FROM usuarios WHERE id=".$dados;
-        $return = $database->select($query);
-
-        echo json_encode($return);
-
-		//echo "Voce procurou sobre o usuario com id = $dados";
+		include 'index.php';
 
 	});
 
-	$app->post('/usuario', function() use ($app, $database) {
+	$app->post('/login', function() use ($app, $database) {
 		//$nome = $app->request()->getBody();
         $temp = $app->request()->headers->all();
         $nome = json_encode($temp);
@@ -39,71 +34,37 @@
 
 		$return = array('ERRO' => 'ERRO' );
 
-		if(isset($nome->Nome) && isset($nome->Sobrenome) && isset($nome->Email) && isset($nome->Senha))
+		if(isset($nome->Email) && isset($nome->Senha))
 		{
+
+			$post_email = $nome->Email;
+			$post_senha = $nome->Senha;
+
 			$array = array(
-				'nome' => $nome->Nome,
-				'sobrenome' => $nome->Sobrenome,
-				'email' => $nome->Email,
-				'senha' => $nome->Senha
+				'email' => $post_email,
+				'senha' => $post_senha
 			);
-			$return = $database->insert("usuarios", $array);
-			$array['id'] = $return;
+
+			$return = $database->select("SELECT email FROM usuarios WHERE email = {$post_email} AND senha = {$post_senha} LIMIT 1");
+
+			if ($return->email == $post_email) {
+				$array['email'] = $return->email;
+				$array['status'] = TRUE;
+			} else {
+				$array['email'] = $return->email;
+				$array['status'] = FALSE;
+			}
+
 		} else {
             $array = array( 'erro' => 'campo obrigatorio.');
-            $array['campos'] = array('nome'=>'obrigatorio', 'sobrenome'=>'obrigatorio', 'email'=>'obrigatorio', 'senha'=>'obrigatorio');
+			$array['campos'] = array(
+				'email' => 'obrigatorio', 
+				'senha'=>'obrigatorio'
+			);
 		}
 
 		echo json_encode($array);
-
 	});
-
-
-	$app->put('/usuario', function() use ($app, $database){
-        $temp = $app->request()->headers->all();
-        $nome = json_encode($temp);
-        $nome = json_decode($nome);
-        $array = array ('ERRO' => 'ERRO');
-        if (isset($nome->Id)){
-        	$array = array();
-            $id = $nome->Id;
-			if(isset($nome->Nome)){ $array['nome'] = $nome->Nome; }
-            if(isset($nome->Sobrenome)){ $array['sobrenome'] = $nome->Sobrenome; }
-            if(isset($nome->Email)){ $array['email'] = $nome->Email; }
-            if(isset($nome->Senha)){ $array['senha'] = $nome->Senha; }
-            $database->update('usuarios', $array, "id=$id");
-            $array['id'] = $id;
-		} else {
-			$array = array( 'erro' => 'campo obrigatorio.');
-			$array['campos'] = array('id' => 'obrigatorio','nome'=>'opcional', 'sobrenome'=>'opcional', 'email'=>'opcional', 'senha'=>'opcional');
-		}
-		$nome = json_encode($array);
-		echo $nome;
-
-	});
-
-
-	$app->delete('/usuario', function() use ($app, $database){
-
-        $temp = $app->request()->headers->all();
-        $nome = json_encode($temp);
-        $nome = json_decode($nome);
-
-        $array = array ('ERRO' => 'ERRO');
-        if (isset($nome->Id)){
-            $array = array();
-            $id = $nome->Id;
-            $database->delete('usuarios', "id=$id");
-            $array['id'] = $id;
-        } else {
-            $array = array( 'erro' => 'campo obrigatorio.');
-            $array['campos'] = array('id' => 'obrigatorio');
-        }
-        $nome = json_encode($array);
-        echo $nome;
-
-	});
-
 
 	$app->run();
 
