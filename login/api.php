@@ -1,12 +1,15 @@
 <?php
 
-	require 'Slim/Slim.php';
+	require 'lib/Slim/Slim.php';
 	\Slim\Slim::registerAutoloader();
+	require 'lib/Database.php';
 
-	require 'Database.php';
+	define('DB_TYPE', 'mysql');
+	define('DB_HOST', 'mysql04-farm76.kinghost.net'); //local
+	define('DB_NAME', 'syscoffe03'); //banco
+	define('DB_USER', 'syscoffe03'); //usuario
+	define('DB_PASS', 'olamundo2019'); //senha
 	$database = new Database(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
-
-
 
 	$app = new \Slim\Slim();
 

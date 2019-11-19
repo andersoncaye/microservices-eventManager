@@ -1,17 +1,16 @@
 <?php
 	
-	require 'Slim/Slim.php';
+	require 'lib/Slim/Slim.php';
 	\Slim\Slim::registerAutoloader();
+	require 'lib/Database.php';
 
-	require 'Database.php';
+	
 	define('DB_TYPE', 'mysql');
 	define('DB_HOST', 'mysql04-farm76.kinghost.net'); //local
 	define('DB_NAME', 'syscoffe03'); //banco
 	define('DB_USER', 'syscoffe03'); //usuario
 	define('DB_PASS', 'olamundo2019'); //senha
 	$database = new Database(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
-
-
 
 	$app = new \Slim\Slim();
 
@@ -111,16 +110,19 @@
         $array = array ('ERRO' => 'ERRO');
         if (isset($nome->Id)){
         	$array = array();
-            $id = $nome->Id;
-			if(isset($nome->Nome)){ $array['nome'] = $nome->Nome; }
-            if(isset($nome->Sobrenome)){ $array['sobrenome'] = $nome->Sobrenome; }
-            if(isset($nome->Email)){ $array['email'] = $nome->Email; }
-            if(isset($nome->Senha)){ $array['senha'] = $nome->Senha; }
+			$id = $nome->Id;
+			
+			if(isset($nome->Nome))		{ $array['nome'] = $nome->Nome; }
+            if(isset($nome->Documento))	{ $array['documento'] = $nome->Documento; }
+            if(isset($nome->Email))		{ $array['email'] = $nome->Email; }
+			if(isset($nome->Senha))		{ $array['senha'] = $nome->Senha; }
+			if(isset($nome->Tipo))		{ $array['tipo'] = $nome->Tipo; }
+			
             $database->update('usuarios', $array, "id=$id");
             $array['id'] = $id;
 		} else {
 			$array = array( 'erro' => 'campo obrigatorio.');
-			$array['campos'] = array('id' => 'obrigatorio','nome'=>'opcional', 'sobrenome'=>'opcional', 'email'=>'opcional', 'senha'=>'opcional');
+			$array['campos'] = array('id' => 'obrigatorio');
 		}
 		$nome = json_encode($array);
 		echo $nome;
