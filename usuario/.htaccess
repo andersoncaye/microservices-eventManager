@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  	#Routes
+  RewriteRule ^api/?$ index.php [NC,L]
+  RewriteRule ^api/show/?$ index.php [NC,L]
+  RewriteRule ^api/show/([0-9]+)/?$ index.php [NC,L]
+  RewriteRule ^api/store/?$ index.php [NC,L]
+  RewriteRule ^api/update/?$ index.php [NC,L]
+  RewriteRule ^api/delete/?$ index.php [NC,L]
+</IfModule>

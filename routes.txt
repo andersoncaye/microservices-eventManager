@@ -1,0 +1,7 @@
+API 	| URL					                    	| METODO
+-----------------------------------------------------------------
+usuario	| ms-api.syscoffe.com.br/usuario/api/show	    | GET
+usuario	| ms-api.syscoffe.com.br/usuario/api/show/{id}	| GET
+usuario	| ms-api.syscoffe.com.br/usuario/api/store  	| POST
+usuario	| ms-api.syscoffe.com.br/usuario/api/update	    | POST
+usuario	| ms-api.syscoffe.com.br/usuario/api/delete	    | POST
