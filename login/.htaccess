@@ -1,0 +1,5 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  	#Routes
+  RewriteRule ^api/?$ index.php [NC,L]
+</IfModule>
