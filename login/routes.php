@@ -1,5 +1,12 @@
 <?php
 
+	$app->get('/', function (){
+
+		//include 'index.php';
+		include 'view.php';
+
+	});
+
 	$app->group('/api', function() use ($app, $database) {
 
 		$app->get('/', function () {

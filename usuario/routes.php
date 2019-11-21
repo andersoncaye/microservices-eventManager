@@ -1,13 +1,11 @@
 <?php
+
 	function requestGet($url){
 		//START - REQUEST GET
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		$headers = array(
 			'Accept: application/json',
-			'Accept-Encoding: gzip, deflate',
-			'Content-Length: 0',
-			'Connection: keep-alive',
 			'Content-type: application/json'
 		);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -18,6 +16,13 @@
 
 		return json_decode($curl_response_json);
 	}
+
+	$app->get('/', function (){
+
+		//include 'index.php';
+		include 'view.php';
+
+	});
 
 	$app->group('/api', function() use ($app, $database, $space) {
 
@@ -32,7 +37,7 @@
 			Método GET
 		*/
 	
-		$app->get('/show/:token', function ($token) use ($database) {
+		$app->get('/show/:token', function ($token) use ($database, $space) {
 			$curl_response = requestGet($space.'login/api/access/'.$token);
 			if ( array_key_exists('token', $curl_response) ) {
 
@@ -49,7 +54,7 @@
 			Método GET
 		*/
 	
-		$app->get('/show/:dados/:token', function($dados, $token) use ($database) {
+		$app->get('/show/:dados/:token', function($dados, $token) use ($database, $space) {
 			
 			$curl_response = requestGet($space.'login/api/access/'.$token);
 			if ( array_key_exists('token', $curl_response) ) {
