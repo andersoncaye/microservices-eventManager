@@ -1,7 +1,11 @@
-API 	| URL					                    	| METODO
------------------------------------------------------------------
-usuario	| ms-api.syscoffe.com.br/usuario/api/show	    | GET
-usuario	| ms-api.syscoffe.com.br/usuario/api/show/{id}	| GET
-usuario	| ms-api.syscoffe.com.br/usuario/api/store  	| POST
-usuario	| ms-api.syscoffe.com.br/usuario/api/update	    | POST
-usuario	| ms-api.syscoffe.com.br/usuario/api/delete	    | POST
+API 	| URL					                    	            | METODO
+-----------------------------------------------------------------------------
+usuario	| ms-api.syscoffe.com.br/usuario/api/show/{token}	        | GET
+usuario	| ms-api.syscoffe.com.br/usuario/api/show/{id}/{token}	    | GET
+usuario	| ms-api.syscoffe.com.br/usuario/api/store  	            | POST
+usuario	| ms-api.syscoffe.com.br/usuario/api/update	                | POST
+usuario	| ms-api.syscoffe.com.br/usuario/api/delete	                | POST
+-----------------------------------------------------------------------------
+login   | ms-api.syscoffe.com.br/login/api/access/{token}           | GET
+login   | ms-api.syscoffe.com.br/login/api/access                   | POST
+-----------------------------------------------------------------------------

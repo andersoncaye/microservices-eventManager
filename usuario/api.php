@@ -16,8 +16,11 @@
 	define('DB_USER', 'root'); //usuario
 	define('DB_PASS', ''); //senha
 
-	$database = new Database(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
+	//$space = 'http://ms-api.syscoffe.com.br/';
+	$space = 'http://127.0.0.1/SYSCoffe/microservices-eventManager/';
 
+	$database = new Database(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
+	
 	$app = new \Slim\Slim();
 
 	require 'routes.php';

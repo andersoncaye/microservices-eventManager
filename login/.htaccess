@@ -2,4 +2,6 @@
   RewriteEngine On
   	#Routes
   RewriteRule ^api/?$ index.php [NC,L]
+  RewriteRule ^api/access/?$ index.php [NC,L]
+  RewriteRule ^api/access/([a-z0-9-]+)/?$ index.php [NC,L]
 </IfModule>
