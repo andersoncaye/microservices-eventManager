@@ -37,7 +37,7 @@
 			Método GET
 		*/
 	
-		$app->get('/show/:token', function ($token) use ($database, $space) {
+		$app->get('/show/:token', function ($token) use ($database, $space, $app) {
 			$curl_response = requestGet($space.'login/api/access/'.$token);
 			if ( array_key_exists('token', $curl_response) ) {
 
@@ -47,14 +47,16 @@
 			} else {
 				$return = json_encode($curl_response);
 			}
-			echo json_encode($return);
+
+            $app->response->write( json_encode($return) );
+            return $app->response()->header('Content-Type', 'application/json');
 		});
 	
 		/*
 			Método GET
 		*/
 	
-		$app->get('/show/:dados/:token', function($dados, $token) use ($database, $space) {
+		$app->get('/show/:dados/:token', function($dados, $token) use ($database, $space, $app) {
 			
 			$curl_response = requestGet($space.'login/api/access/'.$token);
 			if ( array_key_exists('token', $curl_response) ) {
@@ -67,7 +69,8 @@
 				$return = json_encode($curl_response);
 			}
 
-			echo json_encode($return);
+            $app->response->write( json_encode($return) );
+            return $app->response()->header('Content-Type', 'application/json');
 		});
 	
 		/*
@@ -76,34 +79,34 @@
 		*/
 	
 		$app->post('/store', function() use ($app, $database, $space) {
-			$temp = $app->request()->headers->all();
-			$nome = json_encode($temp);
-			$nome = json_decode($nome);
+            $temp = $app->request()->params();
+            $data = json_encode($temp);
+            $nome = json_decode($data);
 	
 			$return = array('ERRO' => 'ERRO' );
-			if (isset($nome->Token)) {
+			if (isset($nome->token)) {
 
-				$curl_response = requestGet($space.'login/api/access/'.$nome->Token);
+				$curl_response = requestGet($space.'login/api/access/'.$nome->token);
 
 				if ( array_key_exists('token', $curl_response) ) {
 					
 					if(
-						isset($nome->Documento) && 
-						isset($nome->Email)	&& 
-						isset($nome->Tipo)
+						isset($nome->documento) &&
+						isset($nome->email)	&&
+						isset($nome->tipo)
 					) {
 						$array = array(
-							'documento' => $nome->Documento,
-							'email' => $nome->Email,
-							'tipo' => $nome->Tipo
+							'documento' => $nome->documento,
+							'email' => $nome->email,
+							'tipo' => $nome->tipo
 						);
 			
-						if ( isset($nome->Nome) ) {
-							$array['nome'] = $nome->Nome;
+						if ( isset($nome->nome) ) {
+							$array['nome'] = $nome->nome;
 						}
 			
-						if ( isset($nome->Senha) ) {
-							$array['senha'] = $nome->Senha;
+						if ( isset($nome->senha) ) {
+							$array['senha'] = $nome->senha;
 						}
 			
 						$return = $database->insert("usuarios", $array);
@@ -129,8 +132,8 @@
 				$array['campos'] = array('token' => 'obrigatorio');
 			}
 
-			echo json_encode($array);
-
+            $app->response->write( json_encode($array) );
+            return $app->response()->header('Content-Type', 'application/json');
 		});
 	
 		/*
@@ -139,44 +142,43 @@
 		*/
 	
 		$app->post('/update', function() use ($app, $database, $space){
-			$temp = $app->request()->headers->all();
-			$nome = json_encode($temp);
-			$nome = json_decode($nome);
-			
-			$array = array ('ERRO' => 'ERRO');
-			if (isset($nome->Token)) {
+		     $temp = $app->request()->params();
+             $data = json_encode($temp);
+             $data = json_decode($data);
 
-				$curl_response = requestGet($space.'login/api/access/'.$nome->Token);
+			 $array = array ('ERRO' => 'ERRO');
+			 if (isset($data->token)) {
 
-				if ( array_key_exists('token', $curl_response) ) {
+			 	$curl_response = requestGet($space.'login/api/access/'.$data->token);
 
-					if (isset($nome->Id)){
-						$array = array();
-						$id = $nome->Id;
+			 	if ( array_key_exists('token', $curl_response) ) {
+
+			 		if (isset($data->id)){
+			 			$array = array();
+			 			$id = $data->id;
 						
-						if(isset($nome->Nome))		{ $array['nome'] = $nome->Nome; }
-						if(isset($nome->Documento))	{ $array['documento'] = $nome->Documento; }
-						if(isset($nome->Email))		{ $array['email'] = $nome->Email; }
-						if(isset($nome->Senha))		{ $array['senha'] = $nome->Senha; }
-						if(isset($nome->Tipo))		{ $array['tipo'] = $nome->Tipo; }
+			 			if(isset($data->nome))		{ $array['nome'] = $data->nome; }
+			 			if(isset($data->documento))	{ $array['documento'] = $data->documento; }
+			 			if(isset($data->email))		{ $array['email'] = $data->email; }
+			 			if(isset($data->senha))		{ $array['senha'] = $data->senha; }
+			 			if(isset($data->tipo))		{ $array['tipo'] = $data->tipo; }
 						
-						$database->update('usuarios', $array, "id=$id");
-						$array['id'] = $id;
-					} else {
-						$array = array( 'erro' => 'campo obrigatorio.');
-						$array['campos'] = array('id' => 'obrigatorio');
-					}
-					$nome = json_encode($array);
-					echo $nome;
-				} else {
-					$array = $curl_response;
-				}
-			} else {
-				$array = array( 'erro' => 'campo obrigatorio.');
-				$array['campos'] = array('token' => 'obrigatorio');
-			}
+			 			$database->update('usuarios', $array, "id = {$id} AND deletado = 0");
+			 			$array['id'] = $id;
+			 		} else {
+			 			$array = array( 'erro' => 'campo obrigatorio.');
+			 			$array['campos'] = array('id' => 'obrigatorio');
+			 		}
+			 	} else {
+			 		$array = $curl_response;
+			 	}
+			 } else {
+			 	$array = array( 'erro' => 'campo obrigatorio.');
+			 	$array['campos'] = array('token' => 'obrigatorio');
+			 }
 
-			echo json_encode($array);
+            $app->response->write( json_encode($array) );
+            return $app->response()->header('Content-Type', 'application/json');
 		});
 	
 		/*
@@ -185,26 +187,26 @@
 		*/
 	
 		$app->post('/delete', function() use ($app, $database, $space){
-			$temp = $app->request()->headers->all();
-			$nome = json_encode($temp);
-			$nome = json_decode($nome);
+			$temp = $app->request()->params();
+            $data = json_encode($temp);
+            $nome = json_decode($data);
 
 			$array = array ( 'erro' => 'Cadastro não desativado' );
 			if (isset($nome->Token)) {
 
-				$curl_response = requestGet($space.'login/api/access/'.$nome->Token);
+				$curl_response = requestGet($space.'login/api/access/'.$nome->token);
 
 				if ( array_key_exists('token', $curl_response) ) {
 
-					if (isset($nome->Id)){
+					if (isset($nome->id)){
 
 						$array = array ( 'deletado' => '1');
-						$return = $database->update('usuarios', $array, 'id = '.$nome->Id);
+						$return = $database->update('usuarios', $array, 'id = '.$nome->id);
 						
-						$array = array ( 'id_destaivado' => $nome->Id);
+						$array = array ( 'id_destaivado' => $nome->id);
 				
 						if (!$return) {
-							$array = array ( 'erro' => 'Cadastro não desativado', 'id' => $nome->Id);
+							$array = array ( 'erro' => 'Cadastro não desativado', 'id' => $nome->id);
 						}
 
 					} else {
@@ -220,7 +222,8 @@
 				$array['campos'] = array('token' => 'obrigatorio');
 			}
 
-			echo json_encode($array);
+            $app->response->write( json_encode($array) );
+            return $app->response()->header('Content-Type', 'application/json');
 		});
 		
 	});

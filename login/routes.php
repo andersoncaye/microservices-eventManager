@@ -29,20 +29,19 @@
 		});
 
 		$app->post('/access', function() use ($app, $database) {
-			//$nome = $app->request()->getBody();
-			$temp = $app->request()->headers->all();
-			$nome = json_encode($temp);
-			$nome = json_decode($nome);
+			$temp = $app->request()->params();
+            $data = json_encode($temp);
+            $data = json_decode($data);
 	
 			$array = array('ERRO' => 'ERRO' );
 			$array['status'] = FALSE;
 	
 			$token = NULL;
 
-			if(isset($nome->Email) && isset($nome->Senha)) {
+			if(isset($data->email) && isset($data->senha)) {
 				
-				$post_email = $nome->Email;
-				$post_senha = $nome->Senha;
+				$post_email = $data->email;
+				$post_senha = $data->senha;
 
 				$qry = 'SELECT email, id FROM usuarios WHERE email = "'.$post_email.'" AND senha = "'.$post_senha.'" LIMIT 1';
 				$return = $database->select($qry);
@@ -92,9 +91,9 @@
 					'senha'=>'obrigatorio'
 				);
 			}
-	
-			echo json_encode($array);
 
+            $app->response->write( json_encode($array) );
+            return $app->response()->header('Content-Type', 'application/json');
 		});
 		
 	});

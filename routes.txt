@@ -1,11 +1,16 @@
-API 	| URL					                    	            | METODO
------------------------------------------------------------------------------
-usuario	| ms-api.syscoffe.com.br/usuario/api/show/{token}	        | GET
-usuario	| ms-api.syscoffe.com.br/usuario/api/show/{id}/{token}	    | GET
-usuario	| ms-api.syscoffe.com.br/usuario/api/store  	            | POST
-usuario	| ms-api.syscoffe.com.br/usuario/api/update	                | POST
-usuario	| ms-api.syscoffe.com.br/usuario/api/delete	                | POST
------------------------------------------------------------------------------
-login   | ms-api.syscoffe.com.br/login/api/access/{token}           | GET
-login   | ms-api.syscoffe.com.br/login/api/access                   | POST
------------------------------------------------------------------------------
+
+|==================================================================================================|
+| API 	        | URL					                    	         | METODO    | AÇÃO        |
+| -------------------------------------------------------------------------------------------------|
+| usuario	     | ms-api.syscoffe.com.br/usuario/api/show/{token}	     | GET       | SELECT ALL  |
+| usuario	     | ms-api.syscoffe.com.br/usuario/api/show/{id}/{token}	 | GET       | SELECT ID   |
+| usuario	     | ms-api.syscoffe.com.br/usuario/api/store  	         | POST      | INSERT      |
+| usuario	     | ms-api.syscoffe.com.br/usuario/api/update	         | POST      | UPDATE      |
+| usuario	     | ms-api.syscoffe.com.br/usuario/api/delete	         | POST      | SOFT DELETE |
+|--------------------------------------------------------------------------------------------------|
+| login          | ms-api.syscoffe.com.br/login/api/access/{token}       | GET       | SELECT      |
+| login          | ms-api.syscoffe.com.br/login/api/access               | POST      | INSERT      |
+|--------------------------------------------------------------------------------------------------|
+| incricaoRapida | ms-api.syscoffe.com.br/inscricaoRapida/api/store      | POST      | INSERT      |
+|--------------------------------------------------------------------------------------------------|
+
