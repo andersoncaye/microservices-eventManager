@@ -4,16 +4,11 @@
 		//START - REQUEST GET
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$headers = array(
-			'Accept: application/json',
-			'Content-type: application/json'
-		);
+		$headers = array('Accept: application/json', 'Content-type: application/json' );
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-
 		$curl_response_json = curl_exec($curl);
 		curl_close($curl);
 		//END - REQUEST GET
-
 		return json_decode($curl_response_json);
 	}
 
@@ -48,7 +43,7 @@
             $temp = $app->request()->params();
             $data = json_encode($temp);
             $data = json_decode($data);
-	
+
 			$return = array('ERRO' => 'ERRO' );
 			if (isset($data->token)) {
 				$curl_response = requestGet($space.'login/api/access/'.$data->token);
@@ -60,11 +55,14 @@
 							'conteudo' => $data->conteudo
 						);
 
-						$header = "Content-Type: text/html; charset= utf-8\n";
-                        $header .= "From: syscoffe@syscoffe.com.br Reply-to: {$array->destino}";
-                        $to = "syscoffe@syscoffe.com.br, {$array->destino}";
+						$mail = $data->destino;
+	                    $mailheader = 'From: syscoffe@syscoffe.com.br'."\r\n";
+                        $mailheader .= 'Reply-to: '.$mail."\r\n";
+                        $to = 'syscoffe@syscoffe.com.br,'.$mail;
+                        $subject = $data->assunto;
+                        $message = $data->conteudo;
 
-                        if( mail($to, $array->assunto, $array->conteudo, $header) ){
+                        if( mail($to, $subject, $message, $mailheader) ){
                             $array['envio'] = TRUE;
                         } else {
                             $array['envio'] = FALSE;
