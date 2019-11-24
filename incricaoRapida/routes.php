@@ -1,21 +1,10 @@
 <?php
 
-	function requestGet($url){
-		//START - REQUEST GET
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$headers = array(
-			'Accept: application/json',
-			'Content-type: application/json'
-		);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-
-		$curl_response_json = curl_exec($curl);
-		curl_close($curl);
-		//END - REQUEST GET
-
-		return json_decode($curl_response_json);
-	}
+    function requestGet($url){
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', $url);
+        return json_decode( $response->getBody() );
+    }
 
     function requestPost($url, $data){
         $curl = curl_init($url);

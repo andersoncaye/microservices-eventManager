@@ -3,6 +3,8 @@
 	require 'lib/Slim/Slim.php';
 	\Slim\Slim::registerAutoloader();
 	require 'lib/Database.php';
+	require 'vendor/autoload.php';
+	use GuzzleHttp\Client;
 
 	define('DB_TYPE', 'mysql');
 

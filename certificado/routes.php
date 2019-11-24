@@ -1,15 +1,9 @@
 <?php
 
     function requestGet($url){
-        //START - REQUEST GET
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $headers = array('Accept: application/json', 'Content-type: application/json' );
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $curl_response_json = curl_exec($curl);
-        curl_close($curl);
-        //END - REQUEST GET
-        return json_decode( $curl_response_json );
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', $url);
+        return json_decode( $response->getBody() );
     }
 
     function requestPost($url, $data){
@@ -24,27 +18,7 @@
         return json_decode( $curl_response );
     }
 
-    function requestGetXml($url){
-        //START - REQUEST GET
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-//        $headers = array('Accept: application/json', 'Content-type: application/json' );
-//        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $curl_response_json = curl_exec($curl);
-        curl_close($curl);
-        //END - REQUEST GET
-
-        $xml = simplexml_load_string($curl_response_json);
-        $json = json_encode($xml);
-        $array = json_decode($json,TRUE);
-
-        var_dump( $array );
-
-        return json_decode( $curl_response_json );
-    }
-
-
-$app->get('/', function (){
+    $app->get('/', function (){
 
 		//include 'index.php';
 		include 'view.php';
@@ -59,17 +33,42 @@ $app->get('/', function (){
 			include 'view.php';
 	
 		});
-	
-		/*
-			Método GET
-		*/
-	
-		$app->get('/show/:number', function ($number) use ($database, $space, $app) {
-			//$curl_response = requestGet($space.'login/api/access/'.$token);
+
+		$app->get('/show/:number/:token', function ($number, $token) use ($database, $space, $app) {
+			$curl_response = requestGet($space.'login/api/access/'.$token);
 			if ( array_key_exists('token', $curl_response) ) {
 
-				$query = "SELECT * FROM usuarios WHERE deletado = 0";
+			    $number = (int) $number;
+
+				$query = "SELECT * FROM certificado WHERE id = {$number}";
 				$return = $database->select($query);
+
+//                if ( !empty($return) ){
+//                    $array = array();
+//
+//                    $v = $return[0];
+//
+//                    $id             = $v->id;
+//                    $id_inscricao   = $v->id_inscricao;
+//                    $url = "https://sofftest.azurewebsites.net/api/inscricoes/{$id_inscricao}?token={$token}";
+//                    $inscricao = requestGet($url);
+//                    $id_registro    = $v->id_registro;
+////                            $registro = requestGet("https://sofftest.azurewebsites.net/api/registros/{$id_registro}?token={$token}");
+//                    $id_usuario     = $v->id_usuario;
+//                    $usuario = requestGet($space."usuario/api/show/{$id_usuario}/{$token}");
+//                    $id_evento      = $v->id_evento;
+//                    $evento = requestGet("https://sofftest.azurewebsites.net/api/eventos/{$id_evento}?token={$token}");
+//
+//                    $array[$id] = array(
+//
+//                        'inscricao' => $inscricao,
+//                        'registro'  => array('id' => $id_registro),
+//                        'usuario'   => $usuario,
+//                        'evento'    => $evento
+//
+//                    );
+//                }
+//                $return = $array;
 
 			} else {
 				$return = json_encode($curl_response);
@@ -83,7 +82,7 @@ $app->get('/', function (){
 			Método GET
 		*/
 	
-		$app->get('/show/:user/:token', function($user, $token) use ($database, $space, $app) {
+		$app->get('/certificados/usuario/:user/:token', function($user, $token) use ($database, $space, $app) {
 			
 			$curl_response = requestGet($space.'login/api/access/'.$token);
             $array = array('erro' => 'campo obrigatorio');
@@ -93,32 +92,34 @@ $app->get('/', function (){
 				$query = "SELECT * FROM certificado WHERE id_usuario = {$user}";
 				$return = $database->select($query);
 
-				if ( !empty($return) ){
-                    $array = array();
-                    foreach ( $return as $k => $v ){
-
-                            $id             = $v->id;
-                            $id_inscricao   = $v->id_inscricao;
-                            $url = "https://sofftest.azurewebsites.net/api/inscricoes/{$id_inscricao}?token={$token}";
-                            echo $url;
-                            $inscricao = requestGetXml($url);
-                            $id_registro    = $v->id_registro;
-//                            $registro = requestGet("https://sofftest.azurewebsites.net/api/registros/{$id_registro}?token={$token}");
-                            $id_usuario     = $v->id_usuario;
-                            $usuario = requestGet($space."usuario/api/show/{$id_usuario}/{$token}");
-                            $id_evento      = $v->id_evento;
-                            $evento = requestGet("https://sofftest.azurewebsites.net/api/eventos/{$id_evento}?token={$token}");
-
-                        $array[$id] = array(
-
-                            'inscricao' => $inscricao,
-                            'registro'  => array('id' => $id_registro),
-                            'usuario'   => $usuario,
-                            'evento'    => $evento
-
-                        );
-                    }
-                    $return = $array;
+//				if ( !empty($return) ){
+//                    $array = array();
+//                    foreach ( $return as $k => $v ){
+//
+//                        $id             = $v->id;
+//
+//                        $id_inscricao   = $v->id_inscricao;
+//                        $inscricao = requestGet("https://sofftest.azurewebsites.net/api/inscricoes/{$id_inscricao}?token={$token}");
+//
+//                        $id_registro    = $v->id_registro;
+////                            $registro = requestGet("https://sofftest.azurewebsites.net/api/registros/{$id_registro}?token={$token}");
+//
+//                        $id_usuario     = $v->id_usuario;
+//                        $usuario = requestGet($space."usuario/api/show/{$id_usuario}/{$token}");
+//
+//                        $id_evento      = $v->id_evento;
+//                        $evento = requestGet("https://sofftest.azurewebsites.net/api/eventos/{$id_evento}?token={$token}");
+//
+//                        $array[$id] = array(
+//
+//                            'inscricao' => $inscricao,
+//                            'registro'  => array('id' => $id_registro),
+//                            'usuario'   => $usuario,
+//                            'evento'    => $evento
+//
+//                        );
+//                    }
+//                    $return = $array;
                 }
 
 			} else {
