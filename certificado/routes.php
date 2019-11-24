@@ -1,23 +1,50 @@
 <?php
 
-	function requestGet($url){
-		//START - REQUEST GET
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$headers = array(
-			'Accept: application/json',
-			'Content-type: application/json'
-		);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    function requestGet($url){
+        //START - REQUEST GET
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $headers = array('Accept: application/json', 'Content-type: application/json' );
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $curl_response_json = curl_exec($curl);
+        curl_close($curl);
+        //END - REQUEST GET
+        return json_decode( $curl_response_json );
+    }
 
-		$curl_response_json = curl_exec($curl);
-		curl_close($curl);
-		//END - REQUEST GET
+    function requestPost($url, $data){
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, 'POST');
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $headers = array('Accept: application/json', 'Content-type: application/json' );
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $curl_response = curl_exec($curl);
+        curl_close($curl);
+        return json_decode( $curl_response );
+    }
 
-		return json_decode($curl_response_json);
-	}
+    function requestGetXml($url){
+        //START - REQUEST GET
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+//        $headers = array('Accept: application/json', 'Content-type: application/json' );
+//        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $curl_response_json = curl_exec($curl);
+        curl_close($curl);
+        //END - REQUEST GET
 
-	$app->get('/', function (){
+        $xml = simplexml_load_string($curl_response_json);
+        $json = json_encode($xml);
+        $array = json_decode($json,TRUE);
+
+        var_dump( $array );
+
+        return json_decode( $curl_response_json );
+    }
+
+
+$app->get('/', function (){
 
 		//include 'index.php';
 		include 'view.php';
@@ -37,8 +64,8 @@
 			Método GET
 		*/
 	
-		$app->get('/show/:token', function ($token) use ($database, $space, $app) {
-			$curl_response = requestGet($space.'login/api/access/'.$token);
+		$app->get('/show/:number', function ($number) use ($database, $space, $app) {
+			//$curl_response = requestGet($space.'login/api/access/'.$token);
 			if ( array_key_exists('token', $curl_response) ) {
 
 				$query = "SELECT * FROM usuarios WHERE deletado = 0";
@@ -56,21 +83,50 @@
 			Método GET
 		*/
 	
-		$app->get('/show/:dados/:token', function($dados, $token) use ($database, $space, $app) {
+		$app->get('/show/:user/:token', function($user, $token) use ($database, $space, $app) {
 			
 			$curl_response = requestGet($space.'login/api/access/'.$token);
+            $array = array('erro' => 'campo obrigatorio');
 			if ( array_key_exists('token', $curl_response) ) {
 
-				$dados = (int) $dados;
-				$query = "SELECT * FROM usuarios WHERE id=".$dados;
+				$user = (int) $user;
+				$query = "SELECT * FROM certificado WHERE id_usuario = {$user}";
 				$return = $database->select($query);
 
+				if ( !empty($return) ){
+                    $array = array();
+                    foreach ( $return as $k => $v ){
+
+                            $id             = $v->id;
+                            $id_inscricao   = $v->id_inscricao;
+                            $url = "https://sofftest.azurewebsites.net/api/inscricoes/{$id_inscricao}?token={$token}";
+                            $inscricao = requestGetXml($url);
+                            $id_registro    = $v->id_registro;
+//                            $registro = requestGet("https://sofftest.azurewebsites.net/api/registros/{$id_registro}?token={$token}");
+                            $id_usuario     = $v->id_usuario;
+                            $usuario = requestGet($space."usuario/api/show/{$id_usuario}/{$token}");
+                            $id_evento      = $v->id_evento;
+                            $evento = requestGet("https://sofftest.azurewebsites.net/api/eventos/{$id_evento}?token={$token}");
+
+                        $array[$id] = array(
+
+                            'inscricao' => $inscricao,
+                            'registro'  => array('id' => $id_registro),
+                            'usuario'   => $usuario,
+                            'evento'    => $evento
+
+                        );
+                    }
+                    $return = $array;
+                }
+
 			} else {
-				$return = json_encode($curl_response);
+				$return = json_encode($array);
 			}
 
             $app->response->write( json_encode($return) );
             return $app->response()->header('Content-Type', 'application/json');
+
 		});
 	
 		/*
@@ -81,45 +137,36 @@
 		$app->post('/store', function() use ($app, $database, $space) {
             $temp = $app->request()->params();
             $data = json_encode($temp);
-            $nome = json_decode($data);
+            $data = json_decode($data);
 	
-			$return = array('ERRO' => 'ERRO' );
-			if (isset($nome->token)) {
-
-				$curl_response = requestGet($space.'login/api/access/'.$nome->token);
-
+			$array = array('ERRO' => 'ERRO' );
+			if ( isset($data->token) ) {
+				$curl_response = requestGet($space.'login/api/access/'.$data->token);
 				if ( array_key_exists('token', $curl_response) ) {
 					
-					if(
-						isset($nome->documento) &&
-						isset($nome->email)	&&
-						isset($nome->tipo)
+					if (
+						isset( $data->id_inscricao  ) &&
+						isset( $data->id_registro   ) &&
+						isset( $data->id_usuario    ) &&
+                        isset( $data->id_evento     )
 					) {
 						$array = array(
-							'documento' => $nome->documento,
-							'email' => $nome->email,
-							'tipo' => $nome->tipo
+							'id_inscricao'  => $data->id_inscricao,
+							'id_registro'   => $data->id_registro,
+							'id_usuario'    => $data->id_usuario,
+                            'id_evento'     => $data->id_evento
 						);
 			
-						if ( isset($nome->nome) ) {
-							$array['nome'] = $nome->nome;
-						}
-			
-						if ( isset($nome->senha) ) {
-							$array['senha'] = $nome->senha;
-						}
-			
-						$return = $database->insert("usuarios", $array);
+						$return = $database->insert("certificado", $array);
 						$array['id'] = $return;
 					} else {
 						$array = array( 'erro' => 'campo obrigatorio.');
 						$array['campos'] = array(
-							'nome'=>'opcional', 
-							'documento'=>'obrigatorio', 
-							'email'=>'obrigatorio', 
-							'senha'=>'opcional',
-							'tipo' => 'obrigatorio',
-							'token' => 'obrigatorio'
+							'id_inscricao'  =>'obrigatorio',
+							'id_registro'   =>'obrigatorio',
+							'id_usuario'    =>'obrigatorio',
+							'id_evento'     =>'obrigatorio',
+							'token'         =>'obrigatorio'
 						);
 					}
 
