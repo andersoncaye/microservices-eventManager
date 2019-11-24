@@ -1,17 +1,22 @@
 
-|==================================================================================================|
-| API 	        | URL					                    	         | METODO    | AÇÃO        |
-| -------------------------------------------------------------------------------------------------|
-| usuario	     | ms-api.syscoffe.com.br/usuario/api/show/{token}	     | GET       | SELECT ALL  |
-| usuario	     | ms-api.syscoffe.com.br/usuario/api/show/{id}/{token}	 | GET       | SELECT ID   |
-| usuario	     | ms-api.syscoffe.com.br/usuario/api/store  	         | POST      | INSERT      |
-| usuario	     | ms-api.syscoffe.com.br/usuario/api/update	         | POST      | UPDATE      |
-| usuario	     | ms-api.syscoffe.com.br/usuario/api/delete	         | POST      | SOFT DELETE |
-|--------------------------------------------------------------------------------------------------|
-| login          | ms-api.syscoffe.com.br/login/api/access/{token}       | GET       | SELECT      |
-| login          | ms-api.syscoffe.com.br/login/api/access               | POST      | INSERT      |
-|--------------------------------------------------------------------------------------------------|
-| incricaoRapida | ms-api.syscoffe.com.br/inscricaoRapida/api/store      | POST      | INSERT      |
-|--------------------------------------------------------------------------------------------------|
-| email          | ms-api.syscoffe.com.br/email/api/send                 | POST      | -           |
-|--------------------------------------------------------------------------------------------------|
+|=====================================================================================================|
+| API 	        | URL					                    	            | METODO    | AÇÃO        |
+| ----------------------------------------------------------------------------------------------------|
+| usuario	     | ms-api.syscoffe.com.br/usuario/api/show/{token}	        | GET       | SELECT ALL  |
+| usuario	     | ms-api.syscoffe.com.br/usuario/api/show/{id}/{token}	    | GET       | SELECT ID   |
+| usuario	     | ms-api.syscoffe.com.br/usuario/api/store  	            | POST      | INSERT      |
+| usuario	     | ms-api.syscoffe.com.br/usuario/api/update	            | POST      | UPDATE      |
+| usuario	     | ms-api.syscoffe.com.br/usuario/api/delete	            | POST      | SOFT DELETE |
+|-----------------------------------------------------------------------------------------------------|
+| login          | ms-api.syscoffe.com.br/login/api/access/{token}          | GET       | SELECT      |
+| login          | ms-api.syscoffe.com.br/login/api/access                  | POST      | INSERT      |
+|-----------------------------------------------------------------------------------------------------|
+| incricaoRapida | ms-api.syscoffe.com.br/inscricaoRapida/api/store         | POST      | INSERT      |
+|-----------------------------------------------------------------------------------------------------|
+| email          | ms-api.syscoffe.com.br/email/api/send                    | POST      | -           |
+|-----------------------------------------------------------------------------------------------------|
+| certificado    | ms-api.syscoffe.com.br/certificado/api/show/{id}/{token} | GET       | SELECT ID   |
+| certificado    | ms-api.syscoffe.com.br/certificado/api/                  | GET       | SELECT      |
+|                | certificados/usuario/{userId}/{token}                    |           |             |
+| certificado    | ms-api.syscoffe.com.br/certificado/api/store             | POST      | INSERT      |
+|-----------------------------------------------------------------------------------------------------|

@@ -186,94 +186,94 @@
 		});
 	
 		/*
-			Método POST
-			Tipo UPDATE = UPDATE
-		*/
-	
-		$app->post('/update', function() use ($app, $database, $space){
-		     $temp = $app->request()->params();
-             $data = json_encode($temp);
-             $data = json_decode($data);
-
-			 $array = array ('ERRO' => 'ERRO');
-			 if (isset($data->token)) {
-
-			 	$curl_response = requestGet($space.'login/api/access/'.$data->token);
-
-			 	if ( array_key_exists('token', $curl_response) ) {
-
-			 		if (isset($data->id)){
-			 			$array = array();
-			 			$id = $data->id;
-						
-			 			if(isset($data->nome))		{ $array['nome'] = $data->nome; }
-			 			if(isset($data->documento))	{ $array['documento'] = $data->documento; }
-			 			if(isset($data->email))		{ $array['email'] = $data->email; }
-			 			if(isset($data->senha))		{ $array['senha'] = $data->senha; }
-			 			if(isset($data->tipo))		{ $array['tipo'] = $data->tipo; }
-						
-			 			$database->update('usuarios', $array, "id = {$id} AND deletado = 0");
-			 			$array['id'] = $id;
-			 		} else {
-			 			$array = array( 'erro' => 'campo obrigatorio.');
-			 			$array['campos'] = array('id' => 'obrigatorio');
-			 		}
-			 	} else {
-			 		$array = $curl_response;
-			 	}
-			 } else {
-			 	$array = array( 'erro' => 'campo obrigatorio.');
-			 	$array['campos'] = array('token' => 'obrigatorio');
-			 }
-
-            $app->response->write( json_encode($array) );
-            return $app->response()->header('Content-Type', 'application/json');
-		});
-	
-		/*
-			Método POST
-			Tipo DELETE = UPDATE
-		*/
-	
-		$app->post('/delete', function() use ($app, $database, $space){
-			$temp = $app->request()->params();
-            $data = json_encode($temp);
-            $nome = json_decode($data);
-
-			$array = array ( 'erro' => 'Cadastro não desativado' );
-			if (isset($nome->Token)) {
-
-				$curl_response = requestGet($space.'login/api/access/'.$nome->token);
-
-				if ( array_key_exists('token', $curl_response) ) {
-
-					if (isset($nome->id)){
-
-						$array = array ( 'deletado' => '1');
-						$return = $database->update('usuarios', $array, 'id = '.$nome->id);
-						
-						$array = array ( 'id_destaivado' => $nome->id);
-				
-						if (!$return) {
-							$array = array ( 'erro' => 'Cadastro não desativado', 'id' => $nome->id);
-						}
-
-					} else {
-						$array = array( 'erro' => 'campo obrigatorio.');
-						$array['campos'] = array('id' => 'obrigatorio');
-					}
-			
-				} else {
-					$array = $curl_response;
-				}
-			} else {
-				$array = array( 'erro' => 'campo obrigatorio.');
-				$array['campos'] = array('token' => 'obrigatorio');
-			}
-
-            $app->response->write( json_encode($array) );
-            return $app->response()->header('Content-Type', 'application/json');
-		});
+//			Método POST
+//			Tipo UPDATE = UPDATE
+//		*/
+//
+//		$app->post('/update', function() use ($app, $database, $space){
+//		     $temp = $app->request()->params();
+//             $data = json_encode($temp);
+//             $data = json_decode($data);
+//
+//			 $array = array ('ERRO' => 'ERRO');
+//			 if (isset($data->token)) {
+//
+//			 	$curl_response = requestGet($space.'login/api/access/'.$data->token);
+//
+//			 	if ( array_key_exists('token', $curl_response) ) {
+//
+//			 		if (isset($data->id)){
+//			 			$array = array();
+//			 			$id = $data->id;
+//
+//			 			if(isset($data->nome))		{ $array['nome'] = $data->nome; }
+//			 			if(isset($data->documento))	{ $array['documento'] = $data->documento; }
+//			 			if(isset($data->email))		{ $array['email'] = $data->email; }
+//			 			if(isset($data->senha))		{ $array['senha'] = $data->senha; }
+//			 			if(isset($data->tipo))		{ $array['tipo'] = $data->tipo; }
+//
+//			 			$database->update('usuarios', $array, "id = {$id} AND deletado = 0");
+//			 			$array['id'] = $id;
+//			 		} else {
+//			 			$array = array( 'erro' => 'campo obrigatorio.');
+//			 			$array['campos'] = array('id' => 'obrigatorio');
+//			 		}
+//			 	} else {
+//			 		$array = $curl_response;
+//			 	}
+//			 } else {
+//			 	$array = array( 'erro' => 'campo obrigatorio.');
+//			 	$array['campos'] = array('token' => 'obrigatorio');
+//			 }
+//
+//            $app->response->write( json_encode($array) );
+//            return $app->response()->header('Content-Type', 'application/json');
+//		});
+//
+//		/*
+//			Método POST
+//			Tipo DELETE = UPDATE
+//		*/
+//
+//		$app->post('/delete', function() use ($app, $database, $space){
+//			$temp = $app->request()->params();
+//            $data = json_encode($temp);
+//            $nome = json_decode($data);
+//
+//			$array = array ( 'erro' => 'Cadastro não desativado' );
+//			if (isset($nome->Token)) {
+//
+//				$curl_response = requestGet($space.'login/api/access/'.$nome->token);
+//
+//				if ( array_key_exists('token', $curl_response) ) {
+//
+//					if (isset($nome->id)){
+//
+//						$array = array ( 'deletado' => '1');
+//						$return = $database->update('usuarios', $array, 'id = '.$nome->id);
+//
+//						$array = array ( 'id_destaivado' => $nome->id);
+//
+//						if (!$return) {
+//							$array = array ( 'erro' => 'Cadastro não desativado', 'id' => $nome->id);
+//						}
+//
+//					} else {
+//						$array = array( 'erro' => 'campo obrigatorio.');
+//						$array['campos'] = array('id' => 'obrigatorio');
+//					}
+//
+//				} else {
+//					$array = $curl_response;
+//				}
+//			} else {
+//				$array = array( 'erro' => 'campo obrigatorio.');
+//				$array['campos'] = array('token' => 'obrigatorio');
+//			}
+//
+//            $app->response->write( json_encode($array) );
+//            return $app->response()->header('Content-Type', 'application/json');
+//		});
 		
 	});
 

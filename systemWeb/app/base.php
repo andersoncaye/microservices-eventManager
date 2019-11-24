@@ -3,13 +3,15 @@
     include ("./system/config.php");
 //    include ('./system/db.php');
 
-    require ('./system/Database.php');
+//    require ('./system/Database.php');
     require ('./system/Session.php');
+    require ('./vendor/autoload.php');
+    use GuzzleHttp\Client;
 
 class Main
 {
     public $session;
-    public $database;
+    //public $database;
 
     public function __construct()
     {
@@ -18,7 +20,19 @@ class Main
         $this->session->init();
 
         //Database
-        $this->database = new \system\Database(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
+        //$this->database = new \system\Database(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
+    }
+
+    public function requestGET($url){
+        $client = new \GuzzleHttp\Client();
+        $response = $client->get($url);
+        return json_decode( $response->getBody() );
+    }
+
+    public function requestPOST($url, $array){
+        $client = new \GuzzleHttp\Client();
+        $response = $client->post($url, $array);
+        return json_decode( $response->getBody() );
     }
 
     public function getLogin($email, $password)
