@@ -26,4 +26,4 @@
     <!-- CSS -->
     <link href="assets/css/style.css" rel="stylesheet" type="text/css"/>
 
-    <title>CB Factory | By Anderson Caye and Bruno Bencke</title>
+    <title>SofEventos | By Anderson Caye</title>

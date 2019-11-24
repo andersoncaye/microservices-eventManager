@@ -31,22 +31,16 @@ class Main
 
     public function requestPOST($url, $array){
         $client = new \GuzzleHttp\Client();
-        $response = $client->post($url, $array);
+        $form_params['form_params'] = $array;
+        $response = $client->post($url, $form_params);
         return json_decode( $response->getBody() );
     }
 
     public function getLogin($email, $password)
     {
-        $table = "user";
-        $fields = "*";
-        $limit = "1";
-        $obj = TRUE;
-        //$password = md5($password);
-        $where = "email = '{$email}' AND password = '{$password}'" ;
-
-        $content = $this->database->select("SELECT {$fields} FROM {$table} WHERE {$where} LIMIT {$limit}", NULL, $obj);
-
-        return $content;
+        $url = "ms-api.syscoffe.com.br/login/api/access";
+        $array = array( 'email' => $email, 'senha' => $password );
+        return $this->requestPOST($url, $array);
     }
     public function clearInjectAllSQL($stringInput)
     {

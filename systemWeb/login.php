@@ -16,7 +16,7 @@
 <body>
 
 <div id="container-login">
-    <h1 class="title-page">Bem-vindo ao CB Factory</h1>
+    <h1 class="title-page">Bem-vindo ao SofEventos</h1>
     <form id="form-login" method="POST">
         <div class="form-group">
             <label for="exampleInputEmail1">Endereço de email</label>
@@ -50,10 +50,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'login'){
 
         //echo $email.' - >'.$password;
 
-        if (!empty($reply) && count($reply) == 1) {
-            foreach ($reply as $row) {
-                $main->session->set("$keySession", $row->email);
-            }
+        if ( !empty($reply) && array_key_exists('token', $reply) ) {
+            $main->session->set("$keySession", $reply->token);
             echo '<script>location.href="index.php";</script>';
         } /*else {
             echo '<script>alert("Login incorreto!");</script>';

@@ -16,11 +16,11 @@
 
                 <br><br>
 
-                <h2 class="bg-white text-center" >CB Factory</h2>
+                <h2 class="bg-white text-center" >SofEventos</h2>
 
                 <br>
 
-                <p class="text-center">GERENCIAMENTO DE CHEQUES RECEBIDOS</p>
+                <p class="text-center">Inscrição e Gerenciamento de Eventos</p>
 
 
                 <p class="text-center">

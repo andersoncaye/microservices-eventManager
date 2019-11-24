@@ -4,9 +4,9 @@
 
         include ("pages/home.php");
 
-    } else if(isset($_GET['page']) && $_GET['page'] == 'findCheque') { //Para receber pagina ...
+    } else if(isset($_GET['page']) && $_GET['page'] == 'findEvento') { //Para receber pagina ...
 
-        include("pages/chequeFIND.php");
+        include("pages/findEvento.php");
 
     } else if(isset($_GET['pros']) && $_GET['pros'] == 'CADclient') { //Para receber pagina ...
 

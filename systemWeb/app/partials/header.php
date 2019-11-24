@@ -9,7 +9,7 @@
                 <a class="nav-link" href="<?php echo PATH; ?>index.php?page">Inicio <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item bg-light">
-                <a class="nav-link" href="<?php echo PATH; ?>index.php?page=findCheque">Pesquisar Cheque</a>
+                <a class="nav-link" href="<?php echo PATH; ?>index.php?page=findEvento">Pesquisar Evento</a>
             </li>
             <li class="nav-item dropdown dmenu bg-light">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -31,7 +31,8 @@
 <!--            </li>-->
         </ul>
         <div class="social-part bg-light">
-            <span class="bg-light">Olá <?php echo $main->session->get($keySession); ?> !</span>
+
+            <span class="bg-light">Seja bem-vindo(a)!</span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="index.php?page=sair">SAIR</a>
             <!--
