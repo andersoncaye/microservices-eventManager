@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d65e144e-9daf-45b8-a433-709a5a1697ca" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/certificado/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/certificado/.htaccess" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/certificado/routes.php" beforeDir="false" afterPath="$PROJECT_DIR$/certificado/routes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/certificado/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/certificado/view.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,8 +16,8 @@
       <file leaf-file-name="routes.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/certificado/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="377">
-              <caret line="101" column="118" lean-forward="true" selection-start-line="101" selection-start-column="118" selection-end-line="101" selection-end-column="118" />
+            <state relative-caret-position="241">
+              <caret line="102" column="38" selection-start-line="102" selection-start-column="38" selection-end-line="102" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -71,7 +69,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="NodePackageJsonFileManager">
-    <packageJsonPaths />
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/systemWeb/assets/js/jQuery-Mask-Plugin-master/package.json" />
+    </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="10" />
@@ -128,12 +128,12 @@
       <option name="presentableId" value="Default" />
       <updated>1574516851481</updated>
       <workItem from="1574516859516" duration="1718000" />
-      <workItem from="1574519472929" duration="18244000" />
+      <workItem from="1574519472929" duration="18761000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19962000" />
+    <option name="totallyTimeSpent" value="20479000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -306,8 +306,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/certificado/routes.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="101" column="118" lean-forward="true" selection-start-line="101" selection-start-column="118" selection-end-line="101" selection-end-column="118" />
+        <state relative-caret-position="241">
+          <caret line="102" column="38" selection-start-line="102" selection-start-column="38" selection-end-line="102" selection-end-column="38" />
         </state>
       </provider>
     </entry>

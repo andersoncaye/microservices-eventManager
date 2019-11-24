@@ -100,6 +100,7 @@ $app->get('/', function (){
                             $id             = $v->id;
                             $id_inscricao   = $v->id_inscricao;
                             $url = "https://sofftest.azurewebsites.net/api/inscricoes/{$id_inscricao}?token={$token}";
+                            echo $url;
                             $inscricao = requestGetXml($url);
                             $id_registro    = $v->id_registro;
 //                            $registro = requestGet("https://sofftest.azurewebsites.net/api/registros/{$id_registro}?token={$token}");
