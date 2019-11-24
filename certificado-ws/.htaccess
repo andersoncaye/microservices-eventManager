@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  	#Routes
+  RewriteRule ^/?$ index.php [NC,L]
+  RewriteRule ^validar/([a-z0-9-]+)/?$ certificado.php?id=$1 [NC,L]
+  RewriteRule ^gerar/([a-z0-9-]+)/?$ certificado.php?id=$1 [NC,L]
+</IfModule>

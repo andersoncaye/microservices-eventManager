@@ -74,7 +74,7 @@
 				$return = json_encode($curl_response);
 			}
 
-            $app->response->write( json_encode($return) );
+            $app->response->write( json_encode($return[0]) );
             return $app->response()->header('Content-Type', 'application/json');
 		});
 	

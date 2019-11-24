@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 24-Nov-2019 às 13:38
+-- Generation Time: 24-Nov-2019 às 18:56
 -- Versão do servidor: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -40,9 +40,9 @@ CREATE TABLE IF NOT EXISTS `certificado` (
 --
 
 INSERT INTO `certificado` (`id`, `id_inscricao`, `id_registro`, `id_usuario`, `id_evento`) VALUES
-(1, 1, 1, 1, 1),
-(2, 1, 2, 1, 0),
-(3, 1, 2, 3, 3),
+(1, 1, 1, 1, 2),
+(2, 1, 2, 1, 2),
+(3, 1, 2, 3, 2),
 (4, 1, 2, 1, 3);
 
 -- --------------------------------------------------------
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `login` (
 --
 
 INSERT INTO `login` (`id`, `date`, `token`, `id_usuario`) VALUES
-(1, '2019-11-21 01:07:12', 'd690caea5ae5641c9cceec11628c6aef', 3),
+(1, '2019-11-24 15:13:38', 'd690caea5ae5641c9cceec11628c6aef', 0),
 (2, '2019-11-23 15:44:48', '7bfce082bfd83d30fa0d78819077a283', 6);
 
 -- --------------------------------------------------------
@@ -84,15 +84,16 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `documento` (`documento`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=13 ;
 
 --
 -- Extraindo dados da tabela `usuarios`
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `documento`, `email`, `senha`, `tipo`, `deletado`) VALUES
+(0, 'Default', '0', 'default@default.com', NULL, 0, 1),
 (1, 'Anderson', '00000000000', 'anderson@anderson.com', 'anderson', 1, 0),
-(2, 'Nick', '00000000020', 'ander@ander.com', 'ander', 0, 1),
+(2, 'Nick', '00000000020', 'ander@ander.com', 'ander', 0, 0),
 (3, 'Nick', '00000000333', 'elias@elias.com', 'elias', 0, 0),
 (5, 'Elias', '00000000004', 'elias4@elias.com', 'elias', 0, 0),
 (6, 'Ninguem', '00000000008', 'email@email.com', 'zero1', 1, 0),
