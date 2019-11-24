@@ -122,9 +122,9 @@
 //                    $return = $array;
                 }
 
-			} else {
-				$return = json_encode($array);
-			}
+//			} else {
+//				$return = json_encode($array);
+//			}
 
             $app->response->write( json_encode($return) );
             return $app->response()->header('Content-Type', 'application/json');
