@@ -40,6 +40,12 @@ if (isset($main)){
 //$inicioCheck = $maxCheck * $page;
 //$fimCheck = $inicioCheck + $maxCheck;
 
+if (isset($_GET['inscrever'])) {
+    $idInscricao = (int) $_GET['inscrever'];
+    $token  = $main->session->get($keySession);
+    $main->requestPUT("https://sofftest.azurewebsites.net/api/inscricoes/{$idInscricao}?token={$token}", array('token'=>$token,'id'=>$idInscricao));
+}
+
 
 $ask = "";
 
@@ -48,8 +54,17 @@ if ( isset($_POST['ask']) && $_POST['ask'] == 'check' ){
     $token = $main->session->get($keySession);
     $eventos = $main->requestGET("https://sofftest.azurewebsites.net/api/eventos?token={$token}");
 } else {
-    $token = $main->session->get($keySession);
+    $token  = $main->session->get($keySession);
+    $id     = $main->session->get($idUser);
+
     $eventos = $main->requestGET("https://sofftest.azurewebsites.net/api/eventos?token={$token}");
+    $myIdEventos = array();
+    $inscricoes = $main->requestGET("https://sofftest.azurewebsites.net/api/inscricoes?token={$token}");
+    foreach ($inscricoes as $k => $v){
+        if ($v->id_usuario == $id){
+            $myIdEventos[$v->id_evento] = $v->id;
+        }
+    }
 }
 
 //Buscar dados dos clientes -- para popular a tabela
@@ -118,7 +133,18 @@ if ( isset($_POST['ask']) && $_POST['ask'] == 'check' ){
                         ?>
                         <td><?php echo $date; ?></td>
                         <td><?php echo $row->nome; ?></td>
-                        <td>Inscreva-se! <i class="fas fa-sign-in-alt"></i></td>
+                        <?php
+                            if (array_key_exists($row->id,$myIdEventos)){
+                            
+                        ?>
+                            <td> </td>
+                        <?php } else { ?>
+                            <td>
+                                <a href="index.php?page=myEvento&inscrever=<?php echo $row->id; ?>" class="text-light">
+                                    Inscreva-se! <i class="fas fa-sign-in-alt"></i> 
+                                </a>
+                            </td>
+                        <?php }?>
                     </tr>
                     <?php $i++;} ?>
                 <?php } else { ?>

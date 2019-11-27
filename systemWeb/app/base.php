@@ -43,6 +43,13 @@ class Main
         return json_decode( $response->getBody() );
     }
 
+    public function requestPUT($url, $array){
+        $client = new \GuzzleHttp\Client();
+        $form_params['form_params '] = $array;
+        $response = $client->put($url, $form_params);
+        return json_decode( $response->getBody() );
+    }
+
     public function getLogin($email, $password)
     {
         $url = "ms-api.syscoffe.com.br/login/api/access";

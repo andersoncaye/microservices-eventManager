@@ -11,7 +11,7 @@
             <li class="nav-item bg-light">
                 <a class="nav-link" href="<?php echo PATH; ?>index.php?page=findEvento">Pesquisar Evento</a>
             </li>
-            <li class="nav-item dropdown dmenu bg-light">
+            <!-- <li class="nav-item dropdown dmenu bg-light">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                     Cadastros
                 </a>
@@ -19,13 +19,13 @@
                     <a class="dropdown-item" href="<?php echo PATH; ?>index.php?page=client">Cliente</a>
                     <a class="dropdown-item" href="<?php echo PATH; ?>index.php?page=malote">Malote</a>
                 </div>
-            </li>
+            </li> -->
             <li class="nav-item bg-light">
                 <a class="nav-link" href="<?php echo PATH; ?>index.php?page=myEvento">Meus Eventos</a>
             </li>
-            <li class="nav-item bg-light">
+           <!-- <li class="nav-item bg-light">
                 <a class="nav-link" href="<?php echo PATH; ?>index.php?page=email">Email</a>
-            </li>
+            </li> -->
 <!--            <li class="nav-item bg-light">-->
 <!--                <a class="nav-link" href="--><?php //echo PATH; ?><!--index.php?page=info">Info</a>-->
 <!--            </li>-->

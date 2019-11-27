@@ -152,10 +152,10 @@ if ( isset($_POST['ask']) && $_POST['ask'] == 'check' ){
                         <td><?php echo $row->nome; ?></td>
                         <td>
                             <?php 
-                                $ar = $main->requestGET("ms-api.syscoffe.com.br/certificado/api/show/{$myIdEventos[$row->id]}/{$token}"); 
-                                if (empty($ar)) {
+                                $ar = $main->requestGET("ms-api.syscoffe.com.br/certificado/api/certificados/inscricao/{$myIdEventos[$row->id]}/{$token}"); 
+                                if (!empty($ar)) {
                             ?>
-                            <a href="index.php?page=myEvento&cancelar=<?php echo $myIdEventos[$row->id]; ?>" class="text-light" target="_blank">
+                            <a href="http://127.0.0.1/SYSCoffe/microservices-eventManager/certificado-ws/gerar/<?php echo $ar->id; ?>" class="text-light" target="_blank">
                                 Certificado 
                             </a>
                             <?php } else {?>
