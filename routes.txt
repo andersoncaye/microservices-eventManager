@@ -11,11 +11,13 @@
 | login          | ms-api.syscoffe.com.br/login/api/access/{token}          | GET       | SELECT      |
 | login          | ms-api.syscoffe.com.br/login/api/access                  | POST      | INSERT      |
 |-----------------------------------------------------------------------------------------------------|
-| incricaoRapida | ms-api.syscoffe.com.br/inscricaoRapida/api/store         | POST      | INSERT      |
+| incricaoRapida | ms-api.syscoffe.com.br/incricaoRapida/api/store          | POST      | INSERT      |
 |-----------------------------------------------------------------------------------------------------|
 | email          | ms-api.syscoffe.com.br/email/api/send                    | POST      | -           |
 |-----------------------------------------------------------------------------------------------------|
 | certificado    | ms-api.syscoffe.com.br/certificado/api/show/{id}/{token} | GET       | SELECT ID   |
+| certificado    | ms-api.syscoffe.com.br/certificado/api/show/{inscricao}/ | GET       | SELECT ID   |
+|                |{token}                                                   |           |             | 
 | certificado    | ms-api.syscoffe.com.br/certificado/api/                  | GET       | SELECT      |
 |                | certificados/usuario/{userId}/{token}                    |           |             |
 | certificado    | ms-api.syscoffe.com.br/certificado/api/store             | POST      | INSERT      |

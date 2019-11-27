@@ -78,6 +78,51 @@
             return $app->response()->header('Content-Type', 'application/json');
 		});
 	
+		$app->get('/certificados/inscricao/:inscricao/:token', function ($inscricao, $token) use ($database, $space, $app) {
+			$curl_response = requestGet($space.'login/api/access/'.$token);
+			if ( array_key_exists('token', $curl_response) ) {
+
+			    $inscricao = (int) $inscricao;
+
+				$query = "SELECT * FROM certificado WHERE id_inscricao = {$inscricao}";
+				$return = $database->select($query);
+
+//                if ( !empty($return) ){
+//                    $array = array();
+//
+//                    $v = $return[0];
+//
+//                    $id             = $v->id;
+//                    $id_inscricao   = $v->id_inscricao;
+//                    $url = "https://sofftest.azurewebsites.net/api/inscricoes/{$id_inscricao}?token={$token}";
+//                    $inscricao = requestGet($url);
+//                    $id_registro    = $v->id_registro;
+////                            $registro = requestGet("https://sofftest.azurewebsites.net/api/registros/{$id_registro}?token={$token}");
+//                    $id_usuario     = $v->id_usuario;
+//                    $usuario = requestGet($space."usuario/api/show/{$id_usuario}/{$token}");
+//                    $id_evento      = $v->id_evento;
+//                    $evento = requestGet("https://sofftest.azurewebsites.net/api/eventos/{$id_evento}?token={$token}");
+//
+//                    $array[$id] = array(
+//
+//                        'inscricao' => $inscricao,
+//                        'registro'  => array('id' => $id_registro),
+//                        'usuario'   => $usuario,
+//                        'evento'    => $evento
+//
+//                    );
+//                }
+//                $return = $array;
+
+			} else {
+				$return = json_encode($curl_response);
+			}
+
+            $app->response->write( json_encode($return[0]) );
+            return $app->response()->header('Content-Type', 'application/json');
+		});
+
+
 		/*
 			Método GET
 		*/

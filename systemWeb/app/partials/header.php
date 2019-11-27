@@ -21,7 +21,7 @@
                 </div>
             </li>
             <li class="nav-item bg-light">
-                <a class="nav-link" href="<?php echo PATH; ?>index.php?page=report">Relatórios</a>
+                <a class="nav-link" href="<?php echo PATH; ?>index.php?page=myEvento">Meus Eventos</a>
             </li>
             <li class="nav-item bg-light">
                 <a class="nav-link" href="<?php echo PATH; ?>index.php?page=email">Email</a>

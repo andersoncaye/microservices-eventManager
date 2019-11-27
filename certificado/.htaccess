@@ -3,6 +3,7 @@
   	#Routes
   RewriteRule ^api/?$ index.php [NC,L]
   RewriteRule ^api/show/([a-z0-9-]+)/([a-z0-9-]+)/?$ index.php [NC,L]
+  RewriteRule ^api/certificados/inscricao/([a-z0-9-]+)/([a-z0-9-]+)/?$ index.php [NC,L]
   RewriteRule ^api/certificados/usuario/([0-9]+)/([a-z0-9-]+)/?$ index.php [NC,L]
   RewriteRule ^api/store/?$ index.php [NC,L]
   #RewriteRule ^api/update/?$ index.php [NC,L]

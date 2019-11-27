@@ -24,9 +24,9 @@
 
         include("pages/malote.php");
 
-    } else if(isset($_GET['page']) && $_GET['page'] == 'report') { //Para receber pagina ...
+    } else if(isset($_GET['page']) && $_GET['page'] == 'myEvento') { //Para receber pagina ...
 
-        include("pages/report.php");
+        include("pages/myEvento.php");
 
     } else if(isset($_GET['page']) && $_GET['page'] == 'email') { //Para receber pagina ...
 

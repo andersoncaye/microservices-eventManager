@@ -52,6 +52,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'login'){
 
         if ( !empty($reply) && array_key_exists('token', $reply) ) {
             $main->session->set("$keySession", $reply->token);
+            $result = $main->requestGET("ms-api.syscoffe.com.br/login/api/access/{$reply->token}");
+            $main->session->set("$idUser", $result->id_usuario);
             echo '<script>location.href="index.php";</script>';
         } /*else {
             echo '<script>alert("Login incorreto!");</script>';

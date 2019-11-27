@@ -13,14 +13,14 @@ if (isset($main)){
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <h1>Pesquisar Evento</h1>
+                <h1>Meus Eventos</h1>
             </div>
             <div class="col-lg-6">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><span>Inicio</span></li>
                         <!--<li class="breadcrumb-item"><span>Home</span></li>-->
-                        <li class="breadcrumb-item active" aria-current="page">Pesquisar Evento</li>
+                        <li class="breadcrumb-item active" aria-current="page">Meus Eventos</li>
                     </ol>
                 </nav>
             </div>
@@ -40,21 +40,53 @@ if (isset($main)){
 //$inicioCheck = $maxCheck * $page;
 //$fimCheck = $inicioCheck + $maxCheck;
 
+if (isset($_GET['cancelar'])) {
+    $idCancelarInscricao = (int) $_GET['cancelar'];
+    $token  = $main->session->get($keySession);
+    //$main->requestDELETE("https://sofftest.azurewebsites.net/api/inscricoes/{$idCancelarInscricao}?token={$token}", array('token'=>$token,'id'=>$idCancelarInscricao));
+}
 
 $ask = "";
 
 if ( isset($_POST['ask']) && $_POST['ask'] == 'check' ){
     $ask = $_POST['search'];
-    $token = $main->session->get($keySession);
-    $eventos = $main->requestGET("https://sofftest.azurewebsites.net/api/eventos?token={$token}");
+    
+    $token  = $main->session->get($keySession);
+    $id     = $main->session->get($idUser);
+    $allEventos = $main->requestGET("https://sofftest.azurewebsites.net/api/eventos?token={$token}");
+    $eventos = array();
+    $myIdEventos = array();
+    $inscricoes = $main->requestGET("https://sofftest.azurewebsites.net/api/inscricoes?token={$token}");
+    foreach ($inscricoes as $k => $v){
+        if ($v->id_usuario == $id){
+            $myIdEventos[$v->id_evento] = $v->id;
+        }
+    }
+    foreach ($allEventos as $k => $v){
+        if (array_key_exists($v->id, $myIdEventos)){
+            $eventos[$k] = $v;
+        }
+    }
 } else {
-    $token = $main->session->get($keySession);
-    $eventos = $main->requestGET("https://sofftest.azurewebsites.net/api/eventos?token={$token}");
+    $token  = $main->session->get($keySession);
+    $id     = $main->session->get($idUser);
+    $allEventos = $main->requestGET("https://sofftest.azurewebsites.net/api/eventos?token={$token}");
+    $eventos = array();
+    $myIdEventos = array();
+    $inscricoes = $main->requestGET("https://sofftest.azurewebsites.net/api/inscricoes?token={$token}");
+    foreach ($inscricoes as $k => $v){
+        if ($v->id_usuario == $id){
+            $myIdEventos[$v->id_evento] = $v->id;
+        }
+    }
+    
+    foreach ($allEventos as $k => $v){
+        if (array_key_exists($v->id, $myIdEventos)){
+            $eventos[$k] = $v;
+        }
+    }
+
 }
-
-//Buscar dados dos clientes -- para popular a tabela
-
-
 
 ?>
 
@@ -118,7 +150,20 @@ if ( isset($_POST['ask']) && $_POST['ask'] == 'check' ){
                         ?>
                         <td><?php echo $date; ?></td>
                         <td><?php echo $row->nome; ?></td>
-                        <td>Inscreva-se! <i class="fas fa-sign-in-alt"></i></td>
+                        <td>
+                            <?php 
+                                $ar = $main->requestGET("ms-api.syscoffe.com.br/certificado/api/show/{$myIdEventos[$row->id]}/{$token}"); 
+                                if (empty($ar)) {
+                            ?>
+                            <a href="index.php?page=myEvento&cancelar=<?php echo $myIdEventos[$row->id]; ?>" class="text-light" target="_blank">
+                                Certificado 
+                            </a>
+                            <?php } else {?>
+                            <a href="index.php?page=myEvento&cancelar=<?php echo $myIdEventos[$row->id]; ?>" class="text-light">
+                                Cancelar inscrição! <i class="fas fa-sign-in-alt"></i> 
+                            </a>
+                            <?php } ?>
+                        </td>
                     </tr>
                     <?php $i++;} ?>
                 <?php } else { ?>
